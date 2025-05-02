@@ -1,0 +1,35 @@
+[
+    {
+      "id": 14422931,
+      "name": "Dias",
+      "email": "dias@example.com",
+      "image": "pictures/Diasava.svg",
+      "grade": "10A",
+      "progress": "30"
+    },
+    {
+      "id": 14422932,
+      "name": "Nurs",
+      "email": "nurs@example.com",
+      "image": "pictures/Nursava.png",
+      "grade": "10A",
+      "progress": "50"
+    },
+    {
+      "id": 14422933,
+      "name": "Ailana",
+      "email": "ailana@example.com",
+      "image": "Ailanaava.svg",
+      "grade": "10A",
+      "progress": "90"
+    },
+    {
+      "id": 14422934,
+      "name": "Zhaniye",
+      "email": "zhaniye@example.com",
+      "image": "Zhaniyeava.svg",
+      "grade": "10A",
+      "progress": "20"
+    }
+  ]
+  
