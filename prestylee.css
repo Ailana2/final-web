@@ -340,7 +340,9 @@ nav ul li a:hover {
   border-radius: 40%;
   animation: inherit;
 }
-
+.bar .subject1{
+  background: #333 !important;
+}
 /* Mechanics water waves - 43% filled */
 .subject1 .water-wave1 {
   top: 57%;
