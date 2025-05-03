@@ -34,7 +34,7 @@
     <p class="status">Excellent</p>
   </div>
   
-  <div class="subject-card" data-subject="thermo">
+  <div class="subject-card" data-subject="Thermodynamics">
     <img src="pictures/Thermo.svg" alt="Thermodynamics">
     <h3>Thermodynamics</h3>
     <p class="status">Excellent</p>
@@ -48,27 +48,43 @@
 </div>
    
     <div class="quiz-table">
-      <h2>Topics</h2>
-      <table id="students" border="1">
+      <h2>Grades</h2>
+      <table class="quiz-table">
         <thead>
           <tr>
-            <th>ID</th>
             <th>Name</th>
-            <th>Subject</th>
-            <th>Grade</th>
+            <th>Quiz</th>
+            <th>Midterm 1</th>
+            <th>Midterm 2</th>
+            <th>total</th>
+
           </tr>
         </thead>
         <tbody>
-          <!-- Rows will be added here dynamically -->
+          <!-- Data rows will go here -->
         </tbody>
       </table>
+      
+      </table>
+      
     
       <!-- Add Topic Form -->
       <div class="add-topic-form">
-        <input type="text" id="newTopic" placeholder="Topic name">
-        <input type="text" id="newQuiz" placeholder="Quiz (e.g. 5/10)">
-        <input type="text" id="newPercent" placeholder="Auto %" readonly>
-        <button onclick="addTopic()">➕ Add Topic</button>
+        <form id="studentForm">
+          <label>Name: <input type="text" id="name" required></label><br>
+          <label>Email: <input type="email" id="email" required></label><br>
+        
+          <h4>Grades</h4>
+          <label>Subject: <input type="text" id="subject" required></label><br>
+          <label>Quiz: <input type="number" id="quiz" required></label><br>
+          <label>Midterm 1: <input type="number" id="midterm1" required></label><br>
+          <label>Midterm 2: <input type="number" id="midterm2" required></label><br>
+        
+          <button type="submit">Submit</button>
+        </form>
+        
+        <p id="responseMsg"></p>
+        
       </div>
     </div>    
     </div>

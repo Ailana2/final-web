@@ -69,6 +69,7 @@ function submitFeedback() {
   subjectCards.forEach(card => {
   card.addEventListener("click", () => {
     const subject = card.getAttribute("data-subject");
+    console.log(subject)
     activateCard(subject);
   });
   });
@@ -85,7 +86,27 @@ function submitFeedback() {
   });
   
   // Update quiz table
-  const topics = topicsData[subjectKey];
+  fetch(`https://student-grades-rest.onrender.com/api/grades/${subjectKey}`)
+  .then(response => response.json())
+  .then(topics => {
+    quizTableBody.innerHTML = "";
+    topics.forEach(item => {
+      const row = `<tr>
+        <td>${item.studentName}</td>
+        <td>${item.quiz}</td>
+        <td>${item.midterm1}</td>
+        <td>${item.midterm2}</td>
+        <td>${Math.round(item.quiz*0.2 + item.midterm1*0.4 + item.midterm2*0.4,3)}%</td>
+
+      </tr>`;
+      quizTableBody.innerHTML += row;
+    });
+  })
+  .catch(error => {
+    console.error("Error fetching subject data:", error);
+  });
+
+
   quizTableBody.innerHTML = "";
   topics.forEach(item => {
     const row = `<tr>
@@ -140,64 +161,50 @@ function submitFeedback() {
   }
   });
   
-  function updateProgressBar() {
-  const percentageCells = document.querySelectorAll('.quiz-table tbody td:nth-child(3)');
-  let total = 0;
-  let count = 0;
-  
-  percentageCells.forEach(cell => {
-    const percent = parseInt(cell.textContent.replace('%', ''));
-    if (!isNaN(percent)) {
-      total += percent;
-      count++;
-    }
+  document.getElementById("studentForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const subject = document.getElementById("subject").value.trim();
+    const quiz = parseFloat(document.getElementById("quiz").value);
+    const midterm1 = parseFloat(document.getElementById("midterm1").value);
+    const midterm2 = parseFloat(document.getElementById("midterm2").value);
+
+    const data = {
+      name,
+      email,
+      grades: [
+        {
+          subject,
+          quiz,
+          midterm1,
+          midterm2
+        }
+      ]
+    };
+
+    fetch("https://student-grades-rest.onrender.com/api/students", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "*/*"
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => {
+      if (!response.ok) throw new Error("Failed to submit student");
+      return response.json();
+    })
+    .then(result => {
+      document.getElementById("responseMsg").textContent = "Student added successfully!";
+      document.getElementById("studentForm").reset();
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      document.getElementById("responseMsg").textContent = "Error adding student.";
+    });
   });
-  
-  const average = count > 0 ? Math.round(total / count) : 0;
-  
-  const progressFill = document.querySelector('.progress-fill');
-  const progressText = document.querySelector('.progress-text');
-  
-  progressFill.style.width = `${average}%`;
-  progressText.textContent = `${average}%`;
-  }
-  
-  // Call after the DOM loads
-  window.addEventListener('DOMContentLoaded', updateProgressBar);
-  
-  
-  
-  fetch('https://student-grades-rest.onrender.com/api/students')
-      .then(response => response.json())
-      .then(data => {
-        const tableBody = document.querySelector('#students tbody');
-        data.forEach(student => {
-          student.grades.forEach(grade => {
-            const row = document.createElement('tr');
-  
-            const idCell = document.createElement('td');
-            idCell.textContent = student.id;
-  
-            const nameCell = document.createElement('td');
-            nameCell.textContent = student.name;
-  
-            const subjectCell = document.createElement('td');
-            subjectCell.textContent = grade.subject;
-  
-            const gradeCell = document.createElement('td');
-            gradeCell.textContent = grade.gradeValue;
-  
-            row.appendChild(idCell);
-            row.appendChild(nameCell);
-            row.appendChild(subjectCell);
-            row.appendChild(gradeCell);
-  
-            tableBody.appendChild(row);
-          });
-        });
-      })
-      .catch(error => {
-        console.error('Error fetching student data:', error);
-      });
+
 
 
